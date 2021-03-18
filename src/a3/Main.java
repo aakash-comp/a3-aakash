@@ -14,11 +14,13 @@ public class Main {
          * A simple example is shown below
          *
          */
-        BST bst = new BSTImpl();
-        bst.insert("hello");
-        bst.insert("world");
-        bst.insert("comp210");
-        System.out.println(bst.getRoot().getValue());
-
+        //Test_show tShow = new Test_show();
+        //tShow.run();
+        //Test_insert tInsert = new Test_insert();
+        //tInsert.run();
+        //Test_maxmin tMax = new Test_maxmin();
+        //tMax.run();
+        //Test_isFull tFull = new Test_isFull();
+        //tFull.run();
     }
 }

@@ -14,6 +14,39 @@ public class BSTImpl implements BST {
         root = new NodeImpl(s);
         size = 0;
     }
+    public void setRoot(Node n){
+        this.root = n;
+    }
+
+    public void show() {
+        int off = 4;
+        int lev = 0;
+        for (int k = 0; k < 10; k++) {
+            System.out.print("+");
+            for (int kk = 0; kk < off - 1; kk++) {
+                System.out.print("-");
+            }
+        }
+        System.out.println("+");
+        show_r(this.root, lev, off);
+        for (int k = 0; k < 10; k++) {
+            System.out.print("+");
+            for (int kk = 0; kk < off - 1; kk++) {
+                System.out.print("-");
+            }
+
+        }
+    }
+
+    private void show_r(Node n, int lev, int off) {
+        if (n == null) return;
+        show_r((n.getRight()), lev + off, off);
+        for (int b = 0; b < lev; b++) {
+            System.out.print(" ");
+        }
+        System.out.println(n.getValue());
+        show_r(n.getLeft(), lev + off, off);
+    }
 
     // The implementation of "height" is given to you below
     // it is here to illustrate for you how to set up
@@ -44,7 +77,34 @@ public class BSTImpl implements BST {
     }
 
     @Override
-    public String insert(String value) { return null; }
+    public String insert(String value) {
+        insert_r(value, this.root);
+        return value;
+    }
+    private Node insert_r(String value, Node c) {
+        if(root == null){
+            root = new NodeImpl(value);
+        }
+        if (c == null) {
+            c = new NodeImpl(value);
+            size++;
+            return c;
+        } else {
+            int comp = value.compareTo(c.getValue());
+
+
+            if (comp < 0) {
+                c.setLeft(insert_r(value, c.getLeft()));
+                return c;
+            } else if (comp > 0) {
+                c.setRight(insert_r(value, c.getRight()));
+            } else {
+                return c;
+            }
+        }
+        return c;
+    }
+
 
     // remove implementation given to you, do NOT change
     @Override
@@ -87,30 +147,105 @@ public class BSTImpl implements BST {
     private Node maxCell(Node c) { // this is used in remove too
         if (c.getRight()==null) return c;
         return maxCell(c.getRight());
-    } ;
+    }
 
     @Override
     public boolean isFull() {
-        return false;
+        return this.isFull_r(this.root);
+    }
+    private boolean isFull_r(Node c){
+        if(root == null){
+            return true;
+        }
+        if(c.getRight() == null && c.getLeft() == null){
+            return true;
+        }
+        else if(c.getLeft() != null && c.getRight() == null){
+            return false;
+        }
+        else if(c.getLeft() == null && c.getRight() != null){
+            return false;
+        }
+        else{
+            return(isFull_r(c.getRight()) && isFull_r(c.getLeft()));
+        }
     }
 
     @Override
     public String findMin() {
-        return null;
+        return this.findMin_r(this.root);
+    }
+    private String findMin_r(Node c){
+        if(root == null){
+            return null;
+        }
+        if(c.getLeft()==null){
+            return c.getValue();
+        }
+        else{
+            return findMin_r(c.getLeft());
+        }
     }
 
     @Override
     public String findMax() {
-        return null;
+        return this.findMax_r(this.root);
+    }
+    private String findMax_r(Node c){
+        if(root == null){
+            return null;
+        }
+        if(c.getRight()==null){
+            return c.getValue();
+        }
+        else{
+            return findMax_r(c.getRight());
+        }
     }
 
     @Override
     public boolean contains(String s) {
+        return contains_r(s, this.root);
+    }
+    private boolean contains_r(String s, Node c){
+        if(root == null){
+            return false;
+        }
+        if(c == null){
+            return false;
+        }
+        if(c.getValue().compareTo(s) == 0){
+            return true;
+        }
+        else if(c.getValue().compareTo(s) > 0){
+            return contains_r(s, c.getLeft());
+        }
+        else if(c.getValue().compareTo(s) < 0){
+            return contains_r(s, c.getRight());
+        }
         return false;
     }
 
     @Override
     public Node get(String s) {
+        return get_r(s, this.root);
+    }
+    private Node get_r(String s, Node c){
+        if(root == null){
+            return null;
+        }
+        if(c == null){
+            return null;
+        }
+        if(c.getValue().compareTo(s) == 0){
+            return c;
+        }
+        else if(c.getValue().compareTo(s) > 0){
+            return get_r(s, c.getLeft());
+        }
+        else if(c.getValue().compareTo(s) < 0){
+            return get_r(s, c.getRight());
+        }
         return null;
     }
 
